@@ -4,7 +4,8 @@ import { Version } from '@microsoft/sp-core-library';
 import {
   BaseClientSideWebPart,
   IPropertyPaneConfiguration,
-  PropertyPaneTextField
+  PropertyPaneTextField,
+  PropertyPaneCheckbox
 } from '@microsoft/sp-webpart-base';
 
 import * as strings from 'TourWebPartStrings';
@@ -17,6 +18,9 @@ import { sp, ClientSidePage, ClientSideWebpart, IClientControlEmphasis } from '@
 export interface ITourWebPartProps {
   actionValue: string;
   description: string;
+  backgroundImage: string;
+  backgroundColor: string;
+  showOnLoad: boolean;
   collectionData: any[];
 
 }
@@ -45,6 +49,9 @@ export default class TourWebPart extends BaseClientSideWebPart<ITourWebPartProps
         actionValue: this.properties.actionValue,
         description: this.properties.description,
         collectionData: this.properties.collectionData,
+        backgroundImage: this.properties.backgroundImage,
+        backgroundColor: this.properties.backgroundColor,
+        showOnLoad: this.properties.showOnLoad
       }
     );
     ReactDom.render(element, this.domElement);
@@ -72,7 +79,7 @@ export default class TourWebPart extends BaseClientSideWebPart<ITourWebPartProps
     page.sections.forEach(section => {
       section.columns.forEach(column => {
         column.controls.forEach(control => {
-          var wpName = {}
+          var wpName = {};
           var wp = {};
           if (control.data.webPartData != undefined) {
             wpName = `sec[${section.order}] col[${column.order}] - ${control.data.webPartData.title}`;
@@ -119,6 +126,15 @@ export default class TourWebPart extends BaseClientSideWebPart<ITourWebPartProps
                 PropertyPaneTextField('description', {
                   label: strings.DescriptionFieldLabel
                 }),
+                PropertyPaneTextField('backgroundImage', {
+                  label: 'Background Image'
+                }),
+                PropertyPaneTextField('backgroundColor', {
+                  label: 'Background Color'
+                }),
+                PropertyPaneCheckbox('showOnLoad', {
+                  text: 'Show On Load',
+                }),
                 PropertyFieldCollectionData("collectionData", {
                   key: "collectionData",
                   label: "Tour steps",
@@ -147,7 +163,7 @@ export default class TourWebPart extends BaseClientSideWebPart<ITourWebPartProps
                                 key: itemId,
                                 value: value,
                                 onChange: (event: React.FormEvent<HTMLTextAreaElement>) => {
-                                  console.log(event);
+                                  // console.log(event);
                                   onUpdate(field.id, event.currentTarget.value);
                                 }
                               })

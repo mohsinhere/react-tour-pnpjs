@@ -2,7 +2,7 @@ import * as React from 'react';
 import styles from './Tour.module.scss';
 import { ITourProps } from './ITourProps';
 import Tours from 'reactour';
-import { CompoundButton } from 'office-ui-fabric-react';
+import { CompoundButton, PrimaryButton, IIconProps } from 'office-ui-fabric-react';
 import { TourHelper } from './TourHelper';
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 
@@ -45,13 +45,21 @@ export default class Tour extends React.Component<ITourProps, ITourState> {
 
 
   public render(): React.ReactElement<ITourState> {
+    const hintIcon: IIconProps = {iconName: 'HintText', style: {fontSize: 24 }};
     return (
       <div className={styles.tour}>
-        <CompoundButton primary text={this.props.actionValue} secondaryText={this.props.description}
+        {/* <PrimaryButton primary iconProps={hintIcon} text={this.props.actionValue} secondaryText={this.props.description}
           disabled={this.state.tourDisabled} onClick={this._openTour} checked={this.state.isTourOpen}
-          className={styles.tutorialButton}>
+          className={styles.tutorialButton} 
+          style={{background: this.props.backgroundColor ? this.props.backgroundColor : "", 
+            borderColor: this.props.backgroundColor ? this.props.backgroundColor : ""}} /> */}
+        <CompoundButton iconProps={hintIcon} primary text={this.props.actionValue} secondaryText={this.props.description}
+          disabled={this.state.tourDisabled} onClick={this._openTour} checked={this.state.isTourOpen}
+          className={styles.tutorialButton} 
+          style={{background: this.props.backgroundColor ? this.props.backgroundColor : "", 
+            borderColor: this.props.backgroundColor ? this.props.backgroundColor : ""}}>
 
-      </CompoundButton>
+        </CompoundButton>
         <Tours
           onRequestClose={this._closeTour}
           startAt={0}
@@ -59,7 +67,7 @@ export default class Tour extends React.Component<ITourProps, ITourState> {
           isOpen={this.state.isTourOpen}
           maskClassName="mask"
           className={styles.reactTourCustomCss}
-          accentColor={"#5cb7b7"}
+          accentColor={this.props.backgroundColor ? this.props.backgroundColor : "#5cb7b7"}
           rounded={5}
           onAfterOpen={this._disableBody}
           onBeforeClose={this._enableBody}
