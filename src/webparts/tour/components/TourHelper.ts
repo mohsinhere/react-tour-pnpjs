@@ -3,7 +3,7 @@ import {
 } from "@pnp/sp";
 import { graph } from "@pnp/graph";
 
-
+import { sortBy } from '@microsoft/sp-lodash-subset';
 
 
 export class TourHelper {
@@ -13,11 +13,14 @@ export class TourHelper {
     var result: any[] = new Array<any>();
 
     if (settings != undefined) {
-      settings.forEach(ele => {
+      const sortedSettings = sortBy(settings, ['Position']);
+
+      sortedSettings.forEach(ele => {
         if (ele.Enabled) {
+          // console.log(ele.WebPart);
           result.push(
             {
-              selector: '[data-sp-feature-instance-id=\'' + ele.WebPart + '\']',
+              selector: ele.WebPart.startsWith('ms-suiteux-search-box') ? `form[class^='${ele.WebPart}']` : '[data-sp-feature-instance-id=\'' + ele.WebPart + '\']',
               content: ele.StepDescription
             });
         }

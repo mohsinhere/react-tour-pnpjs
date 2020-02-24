@@ -65,7 +65,10 @@ export default class TourWebPart extends BaseClientSideWebPart<ITourWebPartProps
     const page = await ClientSidePage.fromFile(file);
 
     const wpData: any[] = [];
-
+    wpData.push({
+      text: 'Search text box',
+      key: 'ms-suiteux-search-box'
+    });
     page.sections.forEach(section => {
       section.columns.forEach(column => {
         column.controls.forEach(control => {
